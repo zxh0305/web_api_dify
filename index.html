@@ -2,86 +2,113 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dify工作流对话系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dify智能对话系统</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Dify 工作流对话系统</h1>
-            <div class="api-config">
-                <label for="api-url">API URL:</label>
-                <input type="text" id="api-url" placeholder="https://api.dify.ai/v1/workflows/run" value="https://api.dify.ai/v1/workflows/run">
+    <div class="app-container">
+        <!-- 头部配置区域 -->
+        <header class="header">
+            <h1>🤖 Dify智能对话</h1>
+            <div class="config-toggle" id="config-toggle">
+                <span>⚙️ 设置</span>
+            </div>
+        </header>
+
+        <!-- 配置面板 -->
+        <div class="config-panel" id="config-panel">
+            <div class="config-item">
+                <label for="api-url">API地址:</label>
+                <input type="text" id="api-url" value="https://api.dify.ai/v1/chat-messages">
+            </div>
+            <div class="config-item">
                 <label for="api-key">API Key:</label>
-                <input type="password" id="api-key" placeholder="输入你的API Key">
+                <input type="password" id="api-key" placeholder="请输入API Key">
+            </div>
+            <div class="config-item">
+                <label for="user-id">用户ID:</label>
+                <input type="text" id="user-id" value="user-001">
+            </div>
+            <div class="config-actions">
+                <button id="save-config-btn" class="btn btn-primary">保存配置</button>
             </div>
         </div>
 
-        <div class="chat-container">
+        <!-- 对话消息区域 -->
+        <div class="chat-container" id="chat-container">
             <div class="chat-messages" id="chat-messages">
+                <!-- 欢迎消息 -->
                 <div class="message system-message">
                     <div class="message-content">
-                        <p>欢迎使用Dify工作流对话系统！</p>
-                        <p>请配置API信息后开始对话。</p>
+                        <p>👋 欢迎使用Dify智能对话系统！</p>
+                        <p>💬 支持<strong>文本</strong>和<strong>语音</strong>两种输入方式</p>
+                        <p>🔊 AI回复可自动语音朗读</p>
+                        <p>⚙️ 请先在设置中配置API Key</p>
                     </div>
                 </div>
-            </div>
-
-            <div class="input-section">
-                <div class="input-wrapper">
-                    <textarea id="user-input" placeholder="输入您的问题..." rows="3"></textarea>
-                    <button id="send-btn" class="btn btn-primary">
-                        <span class="btn-icon">📤</span>
-                        发送
-                    </button>
-                </div>
-                <div class="quick-actions">
-                    <button id="test-api-btn" class="btn btn-secondary">🔗 测试API连接</button>
-                    <button id="clear-chat-btn" class="btn btn-secondary">🗑️ 清空对话</button>
-                </div>
-            </div>
-
-            <div class="asr-tts-section">
-                <h3>语音功能</h3>
-                <div class="asr-tts-controls">
-                    <button id="asr-btn" class="btn btn-tts">
-                        <span class="btn-icon">🎤</span>
-                        ASR 语音识别
-                    </button>
-                    <button id="tts-btn" class="btn btn-tts" disabled>
-                        <span class="btn-icon">🔊</span>
-                        TTS 语音合成
-                    </button>
-                </div>
-                <p class="info-text">ASR和TTS功能已预留接口，待后续开发</p>
             </div>
         </div>
 
-        <div class="settings-panel">
-            <details>
-                <summary>⚙️ 高级设置</summary>
-                <div class="settings-content">
-                    <div class="setting-item">
-                        <label for="timeout">请求超时时间 (秒):</label>
-                        <input type="number" id="timeout" value="30" min="1" max="120">
-                    </div>
-                    <div class="setting-item">
-                        <label for="workflow-id">工作流ID (可选):</label>
-                        <input type="text" id="workflow-id" placeholder="指定工作流ID">
-                    </div>
-                    <div class="setting-item">
-                        <label for="user-id">用户ID:</label>
-                        <input type="text" id="user-id" value="user-001" placeholder="用户标识">
-                    </div>
-                </div>
-            </details>
-        </div>
-    </div>
+        <!-- 输入区域 -->
+        <div class="input-container">
+            <!-- 输入框 -->
+            <div class="input-wrapper">
+                <button id="mic-btn" class="btn btn-mic" title="语音输入">
+                    <span class="mic-icon">🎤</span>
+                </button>
+                <textarea
+                    id="user-input"
+                    placeholder="输入问题或按🎤说话..."
+                    rows="1"
+                ></textarea>
+                <button id="send-btn" class="btn btn-send" title="发送">
+                    <span class="send-icon">📤</span>
+                </button>
+            </div>
 
-    <div class="loading-overlay" id="loading-overlay">
-        <div class="loading-spinner"></div>
-        <p>处理中...</p>
+            <!-- 功能按钮 -->
+            <div class="action-buttons">
+                <button id="clear-btn" class="btn btn-secondary">🗑️ 清空</button>
+                <button id="tts-toggle-btn" class="btn btn-secondary active">🔊 语音朗读: 开</button>
+            </div>
+
+            <!-- TTS设置 -->
+            <div class="tts-settings" id="tts-settings">
+                <div class="tts-setting-item">
+                    <label>语速:</label>
+                    <input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1">
+                    <span id="tts-rate-value">1.0x</span>
+                </div>
+                <div class="tts-setting-item">
+                    <label>音量:</label>
+                    <input type="range" id="tts-volume" min="0" max="1" step="0.1" value="1">
+                    <span id="tts-volume-value">100%</span>
+                </div>
+            </div>
+
+            <!-- 录音状态提示 -->
+            <div class="recording-indicator" id="recording-indicator">
+                <span class="recording-dot"></span>
+                <span>正在录音...</span>
+            </div>
+
+            <!-- 语音播放控制 -->
+            <div class="audio-control" id="audio-control" style="display: none;">
+                <button id="pause-audio-btn" class="btn btn-small">⏸️ 暂停</button>
+                <button id="resume-audio-btn" class="btn btn-small" style="display: none;">▶️ 继续</button>
+                <button id="stop-audio-btn" class="btn btn-small">⏹️ 停止</button>
+            </div>
+        </div>
+
+        <!-- 加载遮罩 -->
+        <div class="loading-overlay" id="loading-overlay">
+            <div class="loading-spinner"></div>
+            <p id="loading-text">AI正在思考...</p>
+        </div>
+
+        <!-- 提示消息 -->
+        <div class="toast" id="toast"></div>
     </div>
 
     <script src="app.js"></script>
