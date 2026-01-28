@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dify工作流对话系统</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Dify 工作流对话系统</h1>
+            <div class="api-config">
+                <label for="api-url">API URL:</label>
+                <input type="text" id="api-url" placeholder="https://api.dify.ai/v1/workflows/run" value="https://api.dify.ai/v1/workflows/run">
+                <label for="api-key">API Key:</label>
+                <input type="password" id="api-key" placeholder="输入你的API Key">
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-messages" id="chat-messages">
+                <div class="message system-message">
+                    <div class="message-content">
+                        <p>欢迎使用Dify工作流对话系统！</p>
+                        <p>请配置API信息后开始对话。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-section">
+                <div class="input-wrapper">
+                    <textarea id="user-input" placeholder="输入您的问题..." rows="3"></textarea>
+                    <button id="send-btn" class="btn btn-primary">
+                        <span class="btn-icon">📤</span>
+                        发送
+                    </button>
+                </div>
+                <div class="quick-actions">
+                    <button id="test-api-btn" class="btn btn-secondary">🔗 测试API连接</button>
+                    <button id="clear-chat-btn" class="btn btn-secondary">🗑️ 清空对话</button>
+                </div>
+            </div>
+
+            <div class="asr-tts-section">
+                <h3>语音功能</h3>
+                <div class="asr-tts-controls">
+                    <button id="asr-btn" class="btn btn-tts">
+                        <span class="btn-icon">🎤</span>
+                        ASR 语音识别
+                    </button>
+                    <button id="tts-btn" class="btn btn-tts" disabled>
+                        <span class="btn-icon">🔊</span>
+                        TTS 语音合成
+                    </button>
+                </div>
+                <p class="info-text">ASR和TTS功能已预留接口，待后续开发</p>
+            </div>
+        </div>
+
+        <div class="settings-panel">
+            <details>
+                <summary>⚙️ 高级设置</summary>
+                <div class="settings-content">
+                    <div class="setting-item">
+                        <label for="timeout">请求超时时间 (秒):</label>
+                        <input type="number" id="timeout" value="30" min="1" max="120">
+                    </div>
+                    <div class="setting-item">
+                        <label for="workflow-id">工作流ID (可选):</label>
+                        <input type="text" id="workflow-id" placeholder="指定工作流ID">
+                    </div>
+                    <div class="setting-item">
+                        <label for="user-id">用户ID:</label>
+                        <input type="text" id="user-id" value="user-001" placeholder="用户标识">
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>处理中...</p>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
